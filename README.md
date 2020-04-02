@@ -14,15 +14,17 @@ OUTPUT:
 
 First line containing the longest palindromic subsequence and second line containing the number of times s2 occurs in s1.
 
-Example 1:
-Input
-abccadbdbcacbaabab
-ab
-Output
-bcabc
-3
+Example 1:<br/>
+
+Input<br/>
+abccadbdbcacbaabab<br/>
+ab<br/>
+Output<br/>
+bcabc<br/>
+3<br/>
 
 Example 2:
+
 Input 
 aaaaaaaaaaaaaaaaaaaaaaaa
 aaa
