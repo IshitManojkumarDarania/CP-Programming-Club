@@ -1,0 +1,44 @@
+#implementing polynomial regression 
+import numpy as np
+import matplotlib.pyplot as plt
+#initialising dataset
+X = np.array([[1, 5, 10, 13, 16, 20, 25, 30, 41, 52]]).T                       
+y = np.array([430, 514, 612, 833, 1133, 1540, 2023, 3040, 5001, 10023])
+m, n = X.shape
+#adding columns of powers to X inturn giving polynomial features to it
+X = np.hstack((np.ones((m, 1)), X))
+X = np.hstack((
+    X,
+    (X[:, 1] ** 2).reshape((m, 1)),
+    (X[:, 1] ** 3).reshape((m, 1))
+))
+#normalizing X which sets mean close to 0 and standard deviation close to 1
+X[:, 1:] = (X[:, 1:] - np.mean(X[:, 1:], axis=0)) / np.std(X[:, 1:], axis=0)
+#this function takes X and phi as arguments and fits on the dataset to make predictions of future values
+def generator(X, phi):
+  return X @ phi
+#initialising phi with random values
+phi = np.random.random(n+3)
+predval = generator(X, phi)
+#mean square error used to reduce error in current predictions
+def error(phi, X, y):
+  return np.mean(np.square(generator(X, phi) - y))
+#generating the regression for decreasing gradient
+val = 0.1
+losses = []
+for _ in range(1000):
+  phi = phi - val * (1/m) * (X.T @ ((X @ phi) - y))
+  losses.append(error(phi, X, y))
+predval = generator(X, phi)
+plt.plot(X[:, 1], predval, label='predval')
+plt.plot(X[:, 1], y, 'o', label='labels')
+plt.legend()
+#regression form inbuilt functions
+z = [430, 514, 612, 833, 1133, 1540, 2023, 3040, 5001, 10023]
+
+regres = numpy.poly1d(numpy.polyfit(X[:,1], z, 3))
+line = numpy.linspace(-1, 2, 8000)
+
+plt.scatter(X[:,1], z)
+plt.plot(line, regres(line))
+plt.show()

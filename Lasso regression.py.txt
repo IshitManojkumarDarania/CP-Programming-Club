@@ -1,0 +1,36 @@
+#Lasso Regression by Ishit Darania
+import matplotlib.pyplot as plt
+import math as mt
+import numpy as np
+from sklearn.datasets import load_diabetes 
+from sklearn.model_selection import train_test_split
+
+lasso=5            #lasso regression constant
+alpha=0.01         #lasso learning rate which is widely used as 0.01
+lassocost=[]
+#loading the standard diabetes data set avilable in sklearn.datasets widely used for regression
+data=load_diabetes()
+M=data.data
+N=data.target
+M_train,M_test,n_train,n_test=train_test_split(M,N,test_size=0.2,random_state=24)
+z=np.random.randn(M_train.shape[1],1)
+M_train.shape
+n_train.resize(353,1)
+n_test.resize(89,1)
+
+for i in range(3000):
+  n=M_train.dot(z)
+  error=n-n_train                                          #error
+  z=z-alpha*(lasso*np.sign(z)+M_train.transpose().dot(error))
+  mean_se=mt.sqrt(error.T.dot(error)/353)                  #mean square error
+  lassocost.append(mean_se)              
+
+#plotting the cost for lasso regularization
+plt.plot(lassocost,color='red')
+plt.ylabel("COST OF LASSO REGRESSION")
+plt.title("Lasso Regression")
+plt.show()
+#this link shows the use of inbuilt lasso regression on diabetes cv dataset with various alpha choices and their scores
+#https://scikit-learn.org/stable/auto_examples/exercises/plot_cv_diabetes.html
+#help taken from
+#https://mlforanalytics.com/2018/05/29/lasso-regression-and-its-implementation-with-python/
